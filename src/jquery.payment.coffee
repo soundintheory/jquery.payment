@@ -102,7 +102,7 @@ $.payment.cards = cards = [
 ]
 
 cardFromNumber = (num) ->
-  num = (num + '').replace(/\D/g, '')
+  num = (num + '').replace(/\s/g, '')
   return card for card in cards when card.pattern.test(num)
 
 cardFromType = (type) ->
@@ -199,13 +199,13 @@ formatBackCardNumber = (e) ->
     $target.prop('selectionStart') isnt value.length
 
   # Remove the digit + trailing space
-  if /\d\s$/.test(value)
+  if /\S\s$/.test(value)
     e.preventDefault()
-    setTimeout -> $target.val(value.replace(/\d\s$/, ''))
+    setTimeout -> $target.val(value.replace(/\S\s$/, ''))
   # Remove digit if ends in space + digit
-  else if /\s\d?$/.test(value)
+  else if /\s\S?$/.test(value)
     e.preventDefault()
-    setTimeout -> $target.val(value.replace(/\d$/, ''))
+    setTimeout -> $target.val(value.replace(/\S$/, ''))
 
 # Format Expiry
 
@@ -477,7 +477,7 @@ $.payment.cardType = (num) ->
   cardFromNumber(num)?.type or null
 
 $.payment.formatCardNumber = (num) ->
-  num = num.replace(/\D/g, '')
+  num = num.replace(/\s/g, '')
   card = cardFromNumber(num)
   return num unless card
 
